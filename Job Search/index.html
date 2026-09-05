@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aiam Agentic Job Search - 5-Agent Pipeline</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Style Sheet -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="logo-icon">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <div class="brand-text">
+                    <h1>Aiam</h1>
+                    <span class="sub-brand">Agentic Job Search</span>
+                </div>
+            </div>
+
+            <nav class="agent-nav">
+                <a href="#resume" class="nav-item active" data-agent="1">
+                    <span class="agent-num">A1</span>
+                    <span class="nav-label">Resume Submission</span>
+                    <span class="status-indicator idle" id="status-a1"><i class="fa-solid fa-circle"></i></span>
+                </a>
+                <a href="#preferences" class="nav-item" data-agent="2">
+                    <span class="agent-num">A2</span>
+                    <span class="nav-label">Select Preferences</span>
+                    <span class="status-indicator idle" id="status-a2"><i class="fa-solid fa-circle"></i></span>
+                </a>
+                <a href="#search" class="nav-item" data-agent="3">
+                    <span class="agent-num">A3</span>
+                    <span class="nav-label">Ready for Search</span>
+                    <span class="status-indicator idle" id="status-a3"><i class="fa-solid fa-circle"></i></span>
+                </a>
+                <a href="#fitment" class="nav-item" data-agent="4">
+                    <span class="agent-num">A4</span>
+                    <span class="nav-label">Ready for Fitment</span>
+                    <span class="status-indicator idle" id="status-a4"><i class="fa-solid fa-circle"></i></span>
+                </a>
+                <a href="#recommendation" class="nav-item" data-agent="5">
+                    <span class="agent-num">A5</span>
+                    <span class="nav-label">Recommendation</span>
+                    <span class="status-indicator idle" id="status-a5"><i class="fa-solid fa-circle"></i></span>
+                </a>
+                <a href="#orchestration" class="nav-item" data-agent="6">
+                    <span class="agent-num"><i class="fa-solid fa-diagram-project"></i></span>
+                    <span class="nav-label">Orchestration Workflow</span>
+                    <span class="status-indicator completed" id="status-a6"><i class="fa-solid fa-check"></i></span>
+                </a>
+            </nav>
+
+            <div class="system-health">
+                <div class="health-header">SYSTEM METRICS</div>
+                <div class="metric-row">
+                    <span>Agent Core v1.2</span>
+                    <span class="badge online">ONLINE</span>
+                </div>
+                <div class="metric-row">
+                    <span>Task Pipeline</span>
+                    <span id="pipeline-progress">0% Done</span>
+                </div>
+
+                <div class="theme-selector-container">
+                    <div class="theme-label"><i class="fa-solid fa-palette"></i> UI Themes & Backgrounds</div>
+                    <div class="theme-options">
+                        <button class="theme-btn active" data-theme="cyber-violet" title="Cyber Violet (Indigo Dark)">
+                            <span class="theme-dot" style="background: linear-gradient(135deg, #6366f1, #06b6d4);"></span>
+                            <span>Violet</span>
+                        </button>
+                        <button class="theme-btn" data-theme="emerald-tech" title="Emerald Matrix (Cyber Mint)">
+                            <span class="theme-dot" style="background: linear-gradient(135deg, #10b981, #34d399);"></span>
+                            <span>Emerald</span>
+                        </button>
+                        <button class="theme-btn" data-theme="midnight-sapphire" title="Midnight Sapphire (Ocean Dark)">
+                            <span class="theme-dot" style="background: linear-gradient(135deg, #3b82f6, #38bdf8);"></span>
+                            <span>Sapphire</span>
+                        </button>
+                        <button class="theme-btn" data-theme="solar-flare" title="Solar Flare (Amber Sunset)">
+                            <span class="theme-dot" style="background: linear-gradient(135deg, #f59e0b, #ef4444);"></span>
+                            <span>Amber</span>
+                        </button>
+                        <button class="theme-btn" data-theme="neon-cyberpunk" title="Neon Cyberpunk (Magenta Abyss)">
+                            <span class="theme-dot" style="background: linear-gradient(135deg, #ec4899, #a855f7);"></span>
+                            <span>Cyberpunk</span>
+                        </button>
+                        <button class="theme-btn" data-theme="pearl-glass" title="Pearl Glass (Light Pearl Mode)">
+                            <span class="theme-dot" style="background: linear-gradient(135deg, #2563eb, #0d9488); border: 1px solid #ffffff;"></span>
+                            <span>Pearl Light</span>
+                        </button>
+                        <button class="theme-btn" data-theme="crimson-obsidian" title="Crimson Obsidian (Deep Blood Red)">
+                            <span class="theme-dot" style="background: linear-gradient(135deg, #e11d48, #fb7185);"></span>
+                            <span>Crimson</span>
+                        </button>
+                        <button class="theme-btn" data-theme="velvet-nebula" title="Velvet Nebula (Deep Purple Twilight)">
+                            <span class="theme-dot" style="background: linear-gradient(135deg, #8b5cf6, #c084fc);"></span>
+                            <span>Nebula</span>
+                        </button>
+                        <button class="theme-btn" data-theme="arctic-frost" title="Arctic Frost (Frozen Ice Teal)">
+                            <span class="theme-dot" style="background: linear-gradient(135deg, #0ea5e9, #22d3ee);"></span>
+                            <span>Arctic</span>
+                        </button>
+                        <button class="theme-btn" data-theme="oled-black" title="OLED Black (Pure Dark Obsidian)">
+                            <span class="theme-dot" style="background: linear-gradient(135deg, #e4e4e7, #52525b);"></span>
+                            <span>OLED</span>
+                        </button>
+                        <button class="theme-btn" data-theme="titanium-bronze" title="Titanium Bronze (Executive Gold)">
+                            <span class="theme-dot" style="background: linear-gradient(135deg, #d97706, #fbbf24);"></span>
+                            <span>Bronze</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace -->
+        <main class="main-content">
+            <!-- Flow Header Visualizer -->
+            <header class="pipeline-header">
+                <div class="flow-step active" id="flow-1">
+                    <div class="flow-icon"><i class="fa-solid fa-file-invoice"></i></div>
+                    <span class="flow-text">1. Resume Upload</span>
+                </div>
+                <div class="flow-connector" id="conn-1"></div>
+                <div class="flow-step" id="flow-2">
+                    <div class="flow-icon"><i class="fa-solid fa-sliders"></i></div>
+                    <span class="flow-text">2. Preferences</span>
+                </div>
+                <div class="flow-connector" id="conn-2"></div>
+                <div class="flow-step" id="flow-3">
+                    <div class="flow-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                    <span class="flow-text">3. Job Search</span>
+                </div>
+                <div class="flow-connector" id="conn-3"></div>
+                <div class="flow-step" id="flow-4">
+                    <div class="flow-icon"><i class="fa-solid fa-chart-simple"></i></div>
+                    <span class="flow-text">4. Fitment Scoring</span>
+                </div>
+                <div class="flow-connector" id="conn-4"></div>
+                <div class="flow-step" id="flow-5">
+                    <div class="flow-icon"><i class="fa-solid fa-clipboard-check"></i></div>
+                    <span class="flow-text">5. Dashboard Recommendation</span>
+                </div>
+                <div class="flow-connector" id="conn-5"></div>
+                <div class="flow-step" id="flow-6">
+                    <div class="flow-icon"><i class="fa-solid fa-diagram-project"></i></div>
+                    <span class="flow-text">6. Orchestration Workflow</span>
+                </div>
+            </header>
+
+            <!-- Agent Container Panel -->
+            <section class="agent-panel-container">
+                
+                <!-- AGENT 1: RESUME SUBMISSION -->
+                <div class="agent-panel active" id="panel-resume">
+                    <div class="panel-header">
+                        <div class="panel-title-desc">
+                            <h2><i class="fa-solid fa-file-invoice"></i> Agent 1: Resume Submission</h2>
+                            <p>Upload your resume in PDF/Word format. The agent will analyze, understand, and extract key parameters and skills.</p>
+                        </div>
+                        <button class="btn btn-primary btn-run-agent" id="run-agent-1">
+                            <i class="fa-solid fa-play"></i> Perform Agent Task
+                        </button>
+                    </div>
+
+                    <div class="panel-body grid-2col">
+                        <!-- Left Side: Inputs -->
+                        <div class="card input-card">
+                            <h3>Upload Resume File</h3>
+                            <div class="file-dropzone" id="resume-dropzone">
+                                <i class="fa-solid fa-cloud-arrow-up drop-icon"></i>
+                                <p class="drop-text">Drag & drop your Resume (PDF, DOCX) here, or <span class="browse-link">browse</span></p>
+                                <span class="file-info" id="uploaded-file-name">No file selected</span>
+                                <input type="file" id="resume-file-input" accept=".pdf,.docx,.doc,.txt" style="display: none;">
+                            </div>
+                            <div class="divider"><span>OR PASTE RESUME TEXT</span></div>
+                            <div class="text-input-wrapper">
+                                <textarea id="resume-text-input" placeholder="Paste your resume text here to analyze manually..."></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Right Side: Outcomes -->
+                        <div class="card outcome-card">
+                            <div class="card-header">
+                                <h3>Agent Outcome Summary</h3>
+                                <span class="badge" id="outcome-badge-1">NOT GENERATED</span>
+                            </div>
+                            <div class="outcome-content-wrapper" id="outcome-1-content">
+                                <div class="empty-state">
+                                    <i class="fa-solid fa-inbox"></i>
+                                    <p>Run the agent to analyze the resume and generate skills file (`skills_file_v1`).</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AGENT 2: SELECT PREFERENCES -->
+                <div class="agent-panel" id="panel-preferences">
+                    <div class="panel-header">
+                        <div class="panel-title-desc">
+                            <h2><i class="fa-solid fa-sliders"></i> Agent 2: Select Preferences</h2>
+                            <p>Configure your job search parameters. These preferences will guide search filtering and fitment calculations.</p>
+                        </div>
+                        <button class="btn btn-primary btn-run-agent" id="run-agent-2">
+                            <i class="fa-solid fa-play"></i> Perform Agent Task
+                        </button>
+                    </div>
+
+                    <div class="panel-body grid-2col">
+                        <!-- Left Side: Inputs -->
+                        <div class="card input-card">
+                            <h3>Search Parameters</h3>
+                            <form id="preferences-form">
+                                <div class="form-group">
+                                    <label for="pref-target-roles">Target Roles <span class="required">*</span></label>
+                                    <input type="text" id="pref-target-roles" placeholder="e.g. Frontend Engineer, Fullstack Developer (comma separated)" required>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label>Work Mode</label>
+                                        <div class="checkbox-group">
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="work-mode" value="Remote" checked> Remote
+                                            </label>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="work-mode" value="Hybrid" checked> Hybrid
+                                            </label>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="work-mode" value="Onsite"> Onsite
+                                            </label>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Employment Type</label>
+                                        <div class="checkbox-group">
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="emp-type" value="Full Time" checked> Full Time
+                                            </label>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="emp-type" value="Part Time"> Part Time
+                                            </label>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="emp-type" value="Contract" checked> Contract
+                                            </label>
+                                            <label class="checkbox-label">
+                                                <input type="checkbox" name="emp-type" value="Project based"> Project
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="pref-salary-min">Min Salary</label>
+                                        <input type="number" id="pref-salary-min" placeholder="e.g. 100000">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pref-salary-max">Max Salary</label>
+                                        <input type="number" id="pref-salary-max" placeholder="e.g. 150000">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pref-salary-currency">Currency</label>
+                                        <select id="pref-salary-currency">
+                                            <option value="USD" selected>USD ($)</option>
+                                            <option value="EUR">EUR (€)</option>
+                                            <option value="GBP">GBP (£)</option>
+                                            <option value="CAD">CAD ($)</option>
+                                            <option value="AUD">AUD ($)</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-row">
+                                    <div class="form-group" style="grid-column: span 2;">
+                                        <label for="pref-city">City</label>
+                                        <input type="text" id="pref-city" placeholder="e.g. New York, London, Chicago">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="pref-country">Country</label>
+                                        <input type="text" id="pref-country" placeholder="e.g. USA, UK, Canada">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="pref-keywords">Keywords (comma separated)</label>
+                                    <input type="text" id="pref-keywords" placeholder="e.g. React, Node.js, AWS, Kubernetes">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="pref-exclude-keywords">Exclude Keywords (comma separated)</label>
+                                    <input type="text" id="pref-exclude-keywords" placeholder="e.g. Manager, PHP, Angular, Junior">
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Right Side: Outcomes -->
+                        <div class="card outcome-card">
+                            <div class="card-header">
+                                <h3>Agent Outcome Summary</h3>
+                                <span class="badge" id="outcome-badge-2">NOT GENERATED</span>
+                            </div>
+                            <div class="outcome-content-wrapper" id="outcome-2-content">
+                                <div class="empty-state">
+                                    <i class="fa-solid fa-inbox"></i>
+                                    <p>Configure preferences and click "Perform Agent Task" to save candidate parameters.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AGENT 3: READY FOR SEARCH -->
+                <div class="agent-panel" id="panel-search">
+                    <div class="panel-header">
+                        <div class="panel-title-desc">
+                            <h2><i class="fa-solid fa-magnifying-glass"></i> Agent 3: Ready for Search</h2>
+                            <p>Queries Google Jobs, LinkedIn, Indeed, and other search engines using resume keywords and preferences to fetch matching roles.</p>
+                        </div>
+                        <button class="btn btn-primary btn-run-agent" id="run-agent-3" disabled>
+                            <i class="fa-solid fa-play"></i> Perform Agent Task
+                        </button>
+                    </div>
+
+                    <div class="panel-body grid-2col">
+                        <!-- Left Side: Console & Search Settings -->
+                        <div class="card input-card flex-col">
+                            <div class="inputs-validation-banner" id="search-deps-banner">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <span>Requires outputs from <strong>Agent A (Resume)</strong> and <strong>Agent B (Preferences)</strong> to start.</span>
+                            </div>
+
+                            <h3>Live Search Console</h3>
+                            <div class="terminal-console" id="search-console">
+                                <div class="console-line system">> System initialized. Waiting for agent execution...</div>
+                            </div>
+                        </div>
+
+                        <!-- Right Side: Outcomes -->
+                        <div class="card outcome-card">
+                            <div class="card-header">
+                                <h3>Agent Outcome: Job Matches</h3>
+                                <span class="badge" id="outcome-badge-3">NOT GENERATED</span>
+                            </div>
+                            <div class="outcome-content-wrapper scrollable" id="outcome-3-content">
+                                <div class="empty-state">
+                                    <i class="fa-solid fa-inbox"></i>
+                                    <p>Agent will render the matching job list here after performing the search.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AGENT 4: READY FOR FITMENT -->
+                <div class="agent-panel" id="panel-fitment">
+                    <div class="panel-header">
+                        <div class="panel-title-desc">
+                            <h2><i class="fa-solid fa-chart-simple"></i> Agent 4: Ready for Fitment</h2>
+                            <p>Runs the step-by-step scoring matrix to evaluate skills match, seniority, and preferences alignment for the target job openings.</p>
+                        </div>
+                        <button class="btn btn-primary btn-run-agent" id="run-agent-4" disabled>
+                            <i class="fa-solid fa-play"></i> Perform Agent Task
+                        </button>
+                    </div>
+
+                    <div class="panel-body grid-2col">
+                        <!-- Left Side: Selection -->
+                        <div class="card input-card flex-col">
+                            <div class="inputs-validation-banner" id="fitment-deps-banner">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <span>Requires job results from <strong>Agent 3 (Search)</strong>.</span>
+                            </div>
+
+                            <div class="selection-header">
+                                <h3>Select Jobs for Fitment Evaluation</h3>
+                                <div class="select-actions">
+                                    <button class="btn btn-sm btn-outline" id="select-all-jobs">Select All</button>
+                                    <button class="btn btn-sm btn-outline" id="deselect-all-jobs">Clear All</button>
+                                </div>
+                            </div>
+
+                            <div class="job-selection-list" id="job-selection-container">
+                                <div class="empty-state">
+                                    <p>No jobs available. Run Agent 3 Search first.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Side: Outcomes -->
+                        <div class="card outcome-card">
+                            <div class="card-header">
+                                <h3>Agent Outcome: Fitment Scorecard</h3>
+                                <span class="badge" id="outcome-badge-4">NOT GENERATED</span>
+                            </div>
+                            <div class="outcome-content-wrapper scrollable" id="outcome-4-content">
+                                <div class="empty-state">
+                                    <i class="fa-solid fa-inbox"></i>
+                                    <p>Select jobs and click "Perform Agent Task" to trigger the scoring algorithm.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AGENT 5: RECOMMENDATION -->
+                <div class="agent-panel" id="panel-recommendation">
+                    <div class="panel-header">
+                        <div class="panel-title-desc">
+                            <h2><i class="fa-solid fa-clipboard-check"></i> Agent 5: Recommendation</h2>
+                            <p>Calculates aggregate dashboard metrics and generates key insights, recommendations, and custom application guides for selected jobs.</p>
+                        </div>
+                        <button class="btn btn-primary btn-run-agent" id="run-agent-5" disabled>
+                            <i class="fa-solid fa-play"></i> Perform Agent Task
+                        </button>
+                    </div>
+
+                    <div class="panel-body grid-full">
+                        <!-- Full Page Dashboard Outcome -->
+                        <div class="card outcome-card dashboard-card">
+                            <div class="card-header">
+                                <h3>Agent Outcome: Executive Dashboard</h3>
+                                <span class="badge" id="outcome-badge-5">NOT GENERATED</span>
+                            </div>
+                            
+                            <div class="outcome-content-wrapper" id="outcome-5-content">
+                                <div class="empty-state">
+                                    <i class="fa-solid fa-inbox"></i>
+                                    <p>Run the Recommendation agent to compile fitment scores into a dynamic executive report.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- AGENT 6: ORCHESTRATION WORKFLOW -->
+                <div class="agent-panel" id="panel-orchestration">
+                    <div class="panel-header">
+                        <div class="panel-title-desc">
+                            <h2><i class="fa-solid fa-diagram-project"></i> Orchestration Workflow Visualizer</h2>
+                            <p>Real-time visual tracker for the 5-Agent automated job search and fitment assessment lifecycle.</p>
+                        </div>
+                        <button class="btn btn-primary" id="run-full-orchestration">
+                            <i class="fa-solid fa-play"></i> Execute Full Pipeline
+                        </button>
+                    </div>
+
+                    <div class="panel-body grid-full" style="gap: 24px;">
+                        <!-- Workflow Graph Card -->
+                        <div class="card visualizer-card" style="padding: 24px; min-height: 400px; display: flex; flex-direction: column; justify-content: center; position: relative;">
+                            <h3 style="margin-bottom: 20px; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">Orchestrator Node Topology</h3>
+                            
+                            <!-- Graph Container -->
+                            <div class="orchestration-graph-container">
+                                <!-- Node 1: A1 -->
+                                <div class="node-wrapper" id="node-a1">
+                                    <div class="node-item status-idle">
+                                        <div class="node-icon"><i class="fa-solid fa-file-invoice"></i></div>
+                                        <div class="node-content">
+                                            <div class="node-title">A1: Resume Parser</div>
+                                            <div class="node-status">Status: <span class="node-status-val">Idle</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="node-meta-info">
+                                        <span>Input: PDF / Text</span>
+                                        <span>Output: skills_file_v1</span>
+                                    </div>
+                                </div>
+                                <div class="graph-arrow arrow-horizontal" id="arrow-1-2"></div>
+
+                                <!-- Node 2: A2 -->
+                                <div class="node-wrapper" id="node-a2">
+                                    <div class="node-item status-idle">
+                                        <div class="node-icon"><i class="fa-solid fa-sliders"></i></div>
+                                        <div class="node-content">
+                                            <div class="node-title">A2: Preferences</div>
+                                            <div class="node-status">Status: <span class="node-status-val">Idle</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="node-meta-info">
+                                        <span>Input: User Form</span>
+                                        <span>Output: config_profile</span>
+                                    </div>
+                                </div>
+
+                                <div class="graph-arrow arrow-horizontal" id="arrow-2-3"></div>
+
+                                <!-- Node 3: A3 -->
+                                <div class="node-wrapper" id="node-a3">
+                                    <div class="node-item status-idle">
+                                        <div class="node-icon"><i class="fa-solid fa-magnifying-glass"></i></div>
+                                        <div class="node-content">
+                                            <div class="node-title">A3: Search Crawler</div>
+                                            <div class="node-status">Status: <span class="node-status-val">Idle</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="node-meta-info">
+                                        <span>Input: A1 + A2 data</span>
+                                        <span>Output: live_jobs_list</span>
+                                    </div>
+                                </div>
+
+                                <div class="graph-arrow arrow-horizontal" id="arrow-3-4"></div>
+
+                                <!-- Node 4: A4 -->
+                                <div class="node-wrapper" id="node-a4">
+                                    <div class="node-item status-idle">
+                                        <div class="node-icon"><i class="fa-solid fa-chart-simple"></i></div>
+                                        <div class="node-content">
+                                            <div class="node-title">A4: Fitment Engine</div>
+                                            <div class="node-status">Status: <span class="node-status-val">Idle</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="node-meta-info">
+                                        <span>Input: A1 + A3 data</span>
+                                        <span>Output: fitment_matrix</span>
+                                    </div>
+                                </div>
+
+                                <div class="graph-arrow arrow-horizontal" id="arrow-4-5"></div>
+
+                                <!-- Node 5: A5 -->
+                                <div class="node-wrapper" id="node-a5">
+                                    <div class="node-item status-idle">
+                                        <div class="node-icon"><i class="fa-solid fa-clipboard-check"></i></div>
+                                        <div class="node-content">
+                                            <div class="node-title">A5: Dashboard</div>
+                                            <div class="node-status">Status: <span class="node-status-val">Idle</span></div>
+                                        </div>
+                                    </div>
+                                    <div class="node-meta-info">
+                                        <span>Input: A4 scorecard</span>
+                                        <span>Output: insights_report</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Details Grid -->
+                        <div class="grid-2col" style="gap: 24px;">
+                            <!-- Orchestration Event Log -->
+                            <div class="card" style="padding: 20px;">
+                                <h3>Orchestration Dispatch Logs</h3>
+                                <div class="console-box" id="orchestrator-console" style="height: 250px; font-family: monospace; font-size: 12px; margin-top: 15px;">
+                                    <div class="console-line system">[System] Orchestrator initialized. Waiting for pipeline dispatch.</div>
+                                </div>
+                            </div>
+
+                            <!-- Execution Metrics -->
+                            <div class="card" style="padding: 20px;">
+                                <h3>System Pipeline Health</h3>
+                                <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
+                                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                                        <span class="label" style="color: var(--text-muted);">Current Active Agent</span>
+                                        <span class="val" id="orch-active-agent" style="font-weight: 600; color: var(--color-primary);">None</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                                        <span class="label" style="color: var(--text-muted);">Total Pipeline Progress</span>
+                                        <span class="val" id="orch-progress" style="font-weight: 600; color: var(--color-success);">0%</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                                        <span class="label" style="color: var(--text-muted);">Loaded Resume Skills</span>
+                                        <span class="val" id="orch-skills-count" style="font-weight: 600; color: white;">0 Skills</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+                                        <span class="label" style="color: var(--text-muted);">Google Jobs Matches Found</span>
+                                        <span class="val" id="orch-jobs-count" style="font-weight: 600; color: white;">0 Listings</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <!-- Script Entry -->
+    <script src="app.js"></script>
+</body>
+</html>
